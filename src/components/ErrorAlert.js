@@ -13,8 +13,9 @@
 * ## Imports
 *
 */
-import SimpleAlert from 'react-native-simpledialog-android'
+
 import _ from 'underscore'
+//var SimpleAlert = require('react-native-simpledialog-android');
 
 var ErrorAlert = class ErrorAlertClass {
   /**
@@ -40,9 +41,11 @@ var ErrorAlert = class ErrorAlertClass {
       }
       if (errorMessage !== '') {
         if (!_.isUndefined(errorMessage.message)) {
-          SimpleAlert.alert('Error', errorMessage.message)
+          //SimpleAlert.alert('Error', errorMessage.message)
+          console.log(errorMessage.message)
         } else {
-          SimpleAlert.alert('Error', errorMessage)
+          //SimpleAlert.alert('Error', errorMessage)
+          console.log(errorMessage)
         }
       }
     }// isNull

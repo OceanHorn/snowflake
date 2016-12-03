@@ -1,8 +1,7 @@
 # OSX
 #
 .DS_Store
-.tern-port
-        
+
 # Xcode
 #
 build/
@@ -23,30 +22,24 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-#Fastlane output of gym
-snowflake.app.dSYM.zip
-
-# Android/IJ
+# Android/IntelliJ
 #
-*.iml
+build/
 .idea
 .gradle
 local.properties
+*.iml
 
 # node.js
 #
-npm-debug.log
 node_modules/
-# jest
-coverage/
-
-src/lib/config.js
+npm-debug.log
 
 # BUCK
 buck-out/
 \.buckd/
 android/app/libs
-android/keystores/debug.keystore
+*.keystore
 
 #vs code
 .vscode/
