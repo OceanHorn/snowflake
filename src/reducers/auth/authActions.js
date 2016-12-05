@@ -244,7 +244,7 @@ export function getSessionToken () {
         } else {
           dispatch(sessionTokenRequestFailure())
           dispatch(loginState())
-          Actions.InitialLoginForm()
+          Actions.Login()
         }
       })
 

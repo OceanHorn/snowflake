@@ -15,10 +15,9 @@
  */
 import React from 'react'
 import {
-    AppRegistry,
-    StyleSheet,
-    View,
-    Text } from 'react-native'
+  AppRegistry,
+  StyleSheet
+} from 'react-native'
 
 /**
  * ### Router-Flux
@@ -26,8 +25,11 @@ import {
  * Necessary components from Router-Flux
  */
 import {
-    Router,
-    Scene} from 'react-native-router-flux'
+  Router,
+  Scene
+} from 'react-native-router-flux'
+
+import scenes from './scenes'
 
 /**
  * ### Redux
@@ -35,7 +37,8 @@ import {
  * ```Provider``` will tie the React-Native to the Redux store
  */
 import {
-    Provider} from 'react-redux'
+  Provider
+} from 'react-redux'
 
 /**
  * ### configureStore
@@ -45,7 +48,7 @@ import {
  */
 import configureStore from './lib/configureStore'
 
-/**
+/** 
  * ### Translations
  */
 import I18n from 'react-native-i18n'
@@ -71,20 +74,13 @@ import Profile from './containers/Profile'
 import Main from './containers/Main'
 import Subview from './containers/Subview'
 
-/**
- * ### icons
- *
- * Add icon support for use in Tabbar
- *
- */
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 /**
  * ## Actions
  *  The necessary actions for dispatching our bootstrap values
  */
-import {setPlatform, setVersion} from './reducers/device/deviceActions'
-import {setStore} from './reducers/global/globalActions'
+import { setPlatform, setVersion } from './reducers/device/deviceActions'
+import { setStore } from './reducers/global/globalActions'
 
 /**
  *  The version of the app but not  displayed yet
@@ -99,22 +95,6 @@ const styles = StyleSheet.create({
   }
 })
 
-/**
- * ## TabIcon
- *
- * Displays the icon for the tab w/ color dependent upon selection
- */
-class TabIcon extends React.Component {
-  render () {
-    var color = this.props.selected ? '#FF3366' : '#FFB3B3'
-    return (
-      <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', alignSelf: 'center'}}>
-        <Icon style={{color: color}} name={this.props.iconName} size={30} />
-        <Text style={{color: color}}>{this.props.title}</Text>
-      </View>
-     )
-  }
-}
 
 /**
  * ## Native
@@ -125,85 +105,29 @@ class TabIcon extends React.Component {
  * will be used when doing hot loading
  */
 
-export default function native (platform) {
+export default function native(platform) {
   let Snowflake = React.createClass({
-    render () {
+    render() {
       const store = configureStore()
 
-            // configureStore will combine reducers from snowflake and main application
-            // it will then create the store based on aggregate state from all reducers
+      // configureStore will combine reducers from snowflake and main application
+      // it will then create the store based on aggregate state from all reducers
       store.dispatch(setPlatform(platform))
       store.dispatch(setVersion(VERSION))
       store.dispatch(setStore(store))
 
-            // setup the router table with App selected as the initial component
-            // note: See https://github.com/aksonov/react-native-router-flux/issues/948
+      // setup the router table with App selected as the initial component
+      // note: See https://github.com/aksonov/react-native-router-flux/issues/948
       return (
-
         <Provider store={store}>
-          <Router sceneStyle={{ backgroundColor: 'white' }}>
-            <Scene key='root' hideNavBar>
-              <Scene key='App'
-                component={App}
-                type='replace'
-                initial />
-              
-              <Scene key='Login'
-                component={Login}
-                type='replace' />
-
-              <Scene key='InitialLoginForm'
-                component={Register}
-                type='replace' />
-
-              <Scene key='Register'
-                component={Register}
-                type='replace' />
-
-              <Scene key='ForgotPassword'
-                component={ForgotPassword}
-                type='replace' />
-
-              <Scene key='Subview'
-                component={Subview} />
-
-              <Scene key='Tabbar'
-                tabs
-                hideNavBar
-                tabBarStyle={styles.tabBar}
-                default='Main'>
-
-                <Scene key='Logout'
-                  title={I18n.t('Snowflake.logout')}
-                  icon={TabIcon}
-                  iconName={'sign-out'}
-                  hideNavBar
-                  component={Logout} />
-
-                <Scene key='Main'
-                  title={I18n.t('Snowflake.main')}
-                  iconName={'home'}
-                  icon={TabIcon}
-                  hideNavBar
-                  component={Main}
-                  initial />
-
-                <Scene key='Profile'
-                  title={I18n.t('Snowflake.profile')}
-                  icon={TabIcon}
-                  iconName={'gear'}
-                  hideNavBar
-                  component={Profile} />
-              </Scene>
-            </Scene>
-          </Router>
+          <Router sceneStyle={{ backgroundColor: 'white' }} scenes={scenes} />
         </Provider>
       )
     }
   })
-    /**
-     * registerComponent to the AppRegistery and off we go....
-     */
 
+  /**
+   * registerComponent to the AppRegistery and off we go....
+   */
   AppRegistry.registerComponent('snowflake', () => Snowflake)
 }

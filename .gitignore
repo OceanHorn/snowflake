@@ -43,3 +43,5 @@ android/app/libs
 
 #vs code
 .vscode/
+typings/
+tsconfig.json
