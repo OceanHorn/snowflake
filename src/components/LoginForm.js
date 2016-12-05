@@ -32,8 +32,10 @@ let Form = t.form.Form
 /**
  * ### Translations
  */
-var I18n = require('react-native-i18n')
+import I18n from 'react-native-i18n'
 import Translations from '../lib/Translations'
+
+I18n.defaultLocale = "zh-CN";
 I18n.translations = Translations
 
 var LoginForm = React.createClass({

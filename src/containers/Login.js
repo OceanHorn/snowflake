@@ -28,12 +28,8 @@ import LoginRender from '../components/LoginRender'
  */
 import React from 'react'
 
-const {
-  LOGIN,
-  REGISTER,
-  FORGOT_PASSWORD
-} = require('../lib/constants').default
-
+import Csts from '../lib/constants'
+//LOGIN,REGISTER,FORGOT_PASSWORD
 /**
  * ## Redux boilerplate
  */
@@ -58,7 +54,7 @@ function buttonPressHandler (login, username, password) {
 /**
  * ### Translations
  */
-var I18n = require('react-native-i18n')
+import I18n from 'react-native-i18n'
 import Translations from '../lib/Translations'
 I18n.translations = Translations
 
@@ -74,12 +70,12 @@ let Login = React.createClass({
 
     return (
       <LoginRender
-        formType={LOGIN}
+        formType={Csts.LOGIN}
         loginButtonText={loginButtonText}
         onButtonPress={onButtonPress}
         displayPasswordCheckbox
-        leftMessageType={REGISTER}
-        rightMessageType={FORGOT_PASSWORD}
+        leftMessageType={Csts.REGISTER}
+        rightMessageType={Csts.FORGOT_PASSWORD}
         auth={this.props.auth}
         global={this.props.global}
       />

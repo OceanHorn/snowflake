@@ -37,7 +37,7 @@ import Header from '../components/Header'
 /**
  * The itemCheckbox will display the state of the email verified
  */
-import {ItemCheckbox} from '../components/ItemCheckbox'
+import ItemCheckbox from '../components/ItemCheckbox'
 /**
  * The necessary React components
  */

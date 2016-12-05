@@ -25,7 +25,7 @@ import
  /**
   * The vector icon
   */
-var Icon = require('react-native-vector-icons/FontAwesome')
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 var ItemCheckbox = React.createClass({
   /**
@@ -147,10 +147,7 @@ var ItemCheckbox = React.createClass({
               flexDirection: 'row',
               flex: 1
             }}>
-              <Icon
-                name={iconName}
-                size={20}
-              />
+              <Icon name={iconName} size={20}/>
               <Text> {this.props.text}</Text>
             </View>
           </TouchableWithoutFeedback>
@@ -165,9 +162,7 @@ var ItemCheckbox = React.createClass({
               flexDirection: 'row',
               flex: 1
             }}>
-              <Icon
-                name={iconName}
-                size={20} />
+              <Icon name={iconName} size={20} />
               <Text> {this.props.text}</Text>
             </View>
           </TouchableHighlight>

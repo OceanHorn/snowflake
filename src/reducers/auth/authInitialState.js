@@ -12,10 +12,8 @@
 /**
  * ## Import
  */
-const {Record} = require('immutable')
-const {
-  REGISTER
-} = require('../../lib/constants').default
+import {Record} from 'immutable'
+import LOGIN from '../../lib/constants'
 
 /**
  * ## Form
@@ -23,12 +21,12 @@ const {
  * fields it contains.
  */
 const Form = Record({
-  state: REGISTER,
+  state: LOGIN,
   disabled: false,
   error: null,
   isValid: false,
   isFetching: false,
-  fields: new (Record({
+  fields: new Record({
     username: '',
     usernameHasError: false,
     usernameErrorMsg: '',
@@ -42,7 +40,7 @@ const Form = Record({
     passwordAgainHasError: false,
     passwordAgainErrorMsg: '',
     showPassword: false
-  }))()
+  })()
 })
 
 /**
@@ -52,5 +50,6 @@ const Form = Record({
 var InitialState = Record({
   form: new Form()
 })
+
 export default InitialState
 

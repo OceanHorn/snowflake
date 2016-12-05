@@ -44,7 +44,7 @@ import LoginForm from '../components/LoginForm'
 /**
  * The itemCheckbox will toggle the display of the password fields
  */
-import {ItemCheckbox} from '../components/ItemCheckbox'
+import ItemCheckbox from '../components/ItemCheckbox'
 
 /**
  * The necessary React components

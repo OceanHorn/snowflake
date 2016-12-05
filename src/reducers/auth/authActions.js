@@ -243,6 +243,7 @@ export function getSessionToken () {
           Actions.Tabbar()
         } else {
           dispatch(sessionTokenRequestFailure())
+          dispatch(loginState())
           Actions.InitialLoginForm()
         }
       })

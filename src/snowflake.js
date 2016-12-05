@@ -48,7 +48,7 @@ import configureStore from './lib/configureStore'
 /**
  * ### Translations
  */
-var I18n = require('react-native-i18n')
+import I18n from 'react-native-i18n'
 
 // Support fallbacks so en-US & en-BR both use en
 I18n.fallbacks = true
@@ -87,36 +87,11 @@ import {setPlatform, setVersion} from './reducers/device/deviceActions'
 import {setStore} from './reducers/global/globalActions'
 
 /**
- * ## States
- * Snowflake explicitly defines initial state
- *
- */
-import AuthInitialState from './reducers/auth/authInitialState'
-import DeviceInitialState from './reducers/device/deviceInitialState'
-import GlobalInitialState from './reducers/global/globalInitialState'
-import ProfileInitialState from './reducers/profile/profileInitialState'
-
-/**
  *  The version of the app but not  displayed yet
  */
 import pack from '../package'
 var VERSION = pack.version
 
-/**
- *
- * ## Initial state
- * Create instances for the keys of each structure in snowflake
- * @returns {Object} object with 4 keys
- */
-function getInitialState () {
-  const _initState = {
-    auth: new AuthInitialState(),
-    device: (new DeviceInitialState()).set('isMobile', true),
-    global: (new GlobalInitialState()),
-    profile: new ProfileInitialState()
-  }
-  return _initState
-}
 
 const styles = StyleSheet.create({
   tabBar: {
@@ -153,7 +128,7 @@ class TabIcon extends React.Component {
 export default function native (platform) {
   let Snowflake = React.createClass({
     render () {
-      const store = configureStore(getInitialState())
+      const store = configureStore()
 
             // configureStore will combine reducers from snowflake and main application
             // it will then create the store based on aggregate state from all reducers
@@ -172,13 +147,13 @@ export default function native (platform) {
                 component={App}
                 type='replace'
                 initial />
+              
+              <Scene key='Login'
+                component={Login}
+                type='replace' />
 
               <Scene key='InitialLoginForm'
                 component={Register}
-                type='replace' />
-
-              <Scene key='Login'
-                component={Login}
                 type='replace' />
 
               <Scene key='Register'

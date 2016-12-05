@@ -19,15 +19,41 @@ import thunk from 'redux-thunk'
 * The reducer contains the 4 reducers from
 * device, global, auth, profile
 */
-import reducer from '../reducers'
+import rootReducer from '../reducers'
+
+//import DevTools from '../containers/DevTools';
+
+/**
+ * ## States
+ * Snowflake explicitly defines initial state
+ *
+ */
+import AuthInitialState from '../reducers/auth/authInitialState'
+import DeviceInitialState from '../reducers/device/deviceInitialState'
+import GlobalInitialState from '../reducers/global/globalInitialState'
+import ProfileInitialState from '../reducers/profile/profileInitialState'
 
 /**
  * ## creatStoreWithMiddleware
  * Like the name...
  */
-const createStoreWithMiddleware = applyMiddleware(
-  thunk
-)(createStore)
+const enhancer = applyMiddleware(thunk)
+
+/**
+ *
+ * ## Initial state
+ * Create instances for the keys of each structure in snowflake
+ * @returns {Object} object with 4 keys
+ */
+function getInitialState () {
+  const _initState = {
+    auth: new AuthInitialState(),
+    device: (new DeviceInitialState()),
+    global: (new GlobalInitialState()),
+    profile: new ProfileInitialState()
+  }
+  return _initState
+}
 
 /**
  * ## configureStore
@@ -35,6 +61,8 @@ const createStoreWithMiddleware = applyMiddleware(
  * device, global, auth, profile
  *
  */
-export default function configureStore (initialState) {
-  return createStoreWithMiddleware(reducer, initialState)
+export default function configureStore () {
+  
+  return createStore(rootReducer, getInitialState(), enhancer);
+
 }
