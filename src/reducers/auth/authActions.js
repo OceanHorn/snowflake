@@ -14,37 +14,7 @@
  *
  * The actions supported
  */
-const {
-  SESSION_TOKEN_REQUEST,
-  SESSION_TOKEN_SUCCESS,
-  SESSION_TOKEN_FAILURE,
-
-  DELETE_TOKEN_REQUEST,
-  DELETE_TOKEN_SUCCESS,
-
-  LOGOUT,
-  REGISTER,
-  LOGIN,
-  FORGOT_PASSWORD,
-
-  LOGOUT_REQUEST,
-  LOGOUT_SUCCESS,
-  LOGOUT_FAILURE,
-
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-
-  ON_AUTH_FORM_FIELD_CHANGE,
-  SIGNUP_REQUEST,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAILURE,
-
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAILURE
-
-} = require('../../lib/constants').default
+import Csts from '../../lib/constants'
 
 /**
  * Project requirements
@@ -55,7 +25,7 @@ import {Actions} from 'react-native-router-flux'
 
 import {appAuthToken} from '../../lib/AppAuthToken'
 
-const _ = require('underscore')
+import _ from 'underscore'
 
 /**
  * ## State actions
@@ -65,24 +35,24 @@ const _ = require('underscore')
 
 export function logoutState () {
   return {
-    type: LOGOUT
+    type: Csts.LOGOUT
   }
 }
 export function registerState () {
   return {
-    type: REGISTER
+    type: Csts.REGISTER
   }
 }
 
 export function loginState () {
   return {
-    type: LOGIN
+    type: Csts.LOGIN
   }
 }
 
 export function forgotPasswordState () {
   return {
-    type: FORGOT_PASSWORD
+    type: Csts.FORGOT_PASSWORD
   }
 }
 
@@ -91,108 +61,81 @@ export function forgotPasswordState () {
  */
 export function logoutRequest () {
   return {
-    type: LOGOUT_REQUEST
+    type: Csts.LOGOUT_REQUEST
   }
 }
 
 export function logoutSuccess () {
   return {
-    type: LOGOUT_SUCCESS
+    type: Csts.LOGOUT_SUCCESS
   }
 }
+
 export function logoutFailure (error) {
   return {
-    type: LOGOUT_FAILURE,
+    type: Csts.LOGOUT_FAILURE,
     payload: error
   }
 }
-/**
- * ## Login
- * After dispatching the logoutRequest, get the sessionToken
- *
- *
- * When the response is received and it's valid
- * change the state to register and finish the logout
- *
- * But if the call fails, like expired token or
- * no network connection, just send the failure
- *
- * And if you fail due to an invalid sessionToken, be sure
- * to delete it so the user can log in.
- *
- * How could there be an invalid sessionToken?  Maybe they
- * haven't used the app for a long time.  Or they used another
- * device and logged out there.
- */
-export function logout () {
-  return dispatch => {
-    dispatch(logoutRequest())
-    return appAuthToken.getSessionToken()
 
-      .then((token) => {
-        return BackendFactory(token).logout()
-      })
-
-      .then(() => {
-        dispatch(loginState())
-        dispatch(logoutSuccess())
-        dispatch(deleteSessionToken())
-        Actions.InitialLoginForm()
-      })
-
-      .catch((error) => {
-        dispatch(loginState())
-        dispatch(logoutFailure(error))
-      })
-  }
-}
 /**
  * ## onAuthFormFieldChange
  * Set the payload so the reducer can work on it
  */
 export function onAuthFormFieldChange (field, value) {
   return {
-    type: ON_AUTH_FORM_FIELD_CHANGE,
+    type: Csts.ON_AUTH_FORM_FIELD_CHANGE,
     payload: {field: field, value: value}
   }
 }
+
 /**
  * ## Signup actions
  */
-export function signupRequest () {
+export function signupRequest (username,email,password) {
   return {
-    type: SIGNUP_REQUEST
+    type: Csts.SIGNUP_REQUEST,
+    payload:{
+      username:username,
+      email:email,
+      password:password
+    }
   }
 }
+
 export function signupSuccess (json) {
   return {
-    type: SIGNUP_SUCCESS,
+    type: Csts.SIGNUP_SUCCESS,
     payload: json
   }
 }
+
 export function signupFailure (error) {
   return {
-    type: SIGNUP_FAILURE,
+    type: Csts.SIGNUP_FAILURE,
     payload: error
   }
 }
+
 /**
  * ## SessionToken actions
  */
-export function sessionTokenRequest () {
+export function sessionTokenRequest () {  
   return {
-    type: SESSION_TOKEN_REQUEST
+    type: Csts.SESSION_TOKEN_REQUEST
   }
 }
+
 export function sessionTokenRequestSuccess (token) {
   return {
-    type: SESSION_TOKEN_SUCCESS,
+    type: Csts.SESSION_TOKEN_SUCCESS,
     payload: token
   }
 }
+
 export function sessionTokenRequestFailure (error) {
   return {
-    type: SESSION_TOKEN_FAILURE,
+    type: Csts.SESSION_TOKEN_FAILURE,
     payload: _.isUndefined(error) ? null : error
   }
 }
@@ -202,12 +145,13 @@ export function sessionTokenRequestFailure (error) {
  */
 export function deleteTokenRequest () {
   return {
-    type: DELETE_TOKEN_REQUEST
+    type: Csts.DELETE_TOKEN_REQUEST
   }
 }
+
 export function deleteTokenRequestSuccess () {
   return {
-    type: DELETE_TOKEN_SUCCESS
+    type: Csts.DELETE_TOKEN_SUCCESS
   }
 }
 
@@ -225,36 +169,6 @@ export function deleteSessionToken () {
       })
   }
 }
-/**
- * ## Token
- * If AppAuthToken has the sessionToken, the user is logged in
- * so set the state to logout.
- * Otherwise, the user will default to the login in screen.
- */
-export function getSessionToken () {
-  return dispatch => {
-    dispatch(sessionTokenRequest())
-    return appAuthToken.getSessionToken()
-
-      .then((token) => {
-        if (token) {
-          dispatch(sessionTokenRequestSuccess(token))
-          dispatch(logoutState())
-          Actions.Tabbar()
-        } else {
-          dispatch(sessionTokenRequestFailure())
-          dispatch(loginState())
-          Actions.Login()
-        }
-      })
-
-      .catch((error) => {
-        dispatch(sessionTokenRequestFailure(error))
-        dispatch(loginState())
-        Actions.InitialLoginForm()
-      })
-  }
-}
 
 /**
  * ## saveSessionToken
@@ -264,105 +178,31 @@ export function getSessionToken () {
 export function saveSessionToken (json) {
   return appAuthToken.storeSessionToken(json)
 }
-/**
- * ## signup
- * @param {string} username - name of user
- * @param {string} email - user's email
- * @param {string} password - user's password
- *
- * Call the server signup and if good, save the sessionToken,
- * set the state to logout and signal success
- *
- * Otherwise, dispatch the error so the user can see
- */
-export function signup (username, email, password) {
-  return dispatch => {
-    dispatch(signupRequest())
-    return BackendFactory().signup({
-      username: username,
-      email: email,
-      password: password
-    })
-
-      .then((json) => {
-        return saveSessionToken(
-          Object.assign({}, json,
-            { username: username,
-              email: email
-            })
-          )
-          .then(() => {
-            dispatch(signupSuccess(
-              Object.assign({}, json,
-               { username: username,
-                 email: email
-               })
-            ))
-            dispatch(logoutState())
-            // navigate to Tabbar
-            Actions.Tabbar()
-          })
-      })
-      .catch((error) => {
-        dispatch(signupFailure(error))
-      })
-  }
-}
 
 /**
  * ## Login actions
  */
-export function loginRequest () {
+export function loginRequest (username,password) {
   return {
-    type: LOGIN_REQUEST
+    type: Csts.LOGIN_REQUEST,
+    payload:{
+      username:username,
+      password:password
+    }
   }
 }
 
 export function loginSuccess (json) {
   return {
-    type: LOGIN_SUCCESS,
+    type: Csts.LOGIN_SUCCESS,
     payload: json
   }
 }
 
 export function loginFailure (error) {
   return {
-    type: LOGIN_FAILURE,
+    type: Csts.LOGIN_FAILURE,
     payload: error
-  }
-}
-/**
- * ## Login
- * @param {string} username - user's name
- * @param {string} password - user's password
- *
- * After calling Backend, if response is good, save the json
- * which is the currentUser which contains the sessionToken
- *
- * If successful, set the state to logout
- * otherwise, dispatch a failure
- */
-
-export function login (username, password) {
-  return dispatch => {
-    dispatch(loginRequest())
-    return BackendFactory().login({
-      username: username,
-      password: password
-    })
-
-      .then(function (json) {
-        return saveSessionToken(json)
-          .then(function () {
-            dispatch(loginSuccess(json))
-            // navigate to Tabbar
-            Actions.Tabbar()
-            dispatch(logoutState())
-          })
-      })
-      .catch((error) => {
-        dispatch(loginFailure(error))
-      })
   }
 }
 
@@ -371,19 +211,19 @@ export function login (username, password) {
  */
 export function resetPasswordRequest () {
   return {
-    type: RESET_PASSWORD_REQUEST
+    type: Csts.RESET_PASSWORD_REQUEST
   }
 }
 
 export function resetPasswordSuccess () {
   return {
-    type: RESET_PASSWORD_SUCCESS
+    type: Csts.RESET_PASSWORD_SUCCESS
   }
 }
 
 export function resetPasswordFailure (error) {
   return {
-    type: RESET_PASSWORD_FAILURE,
+    type: Csts.RESET_PASSWORD_FAILURE,
     payload: error
   }
 }

@@ -31,9 +31,10 @@ import {appAuthToken} from '../../lib/AppAuthToken'
 /**
  * ## retreiving profile actions
  */
-export function getProfileRequest () {
+export function getProfileRequest (sessionToken) {
   return {
-    type: GET_PROFILE_REQUEST
+    type: GET_PROFILE_REQUEST,
+    payload:{sessionToken:sessionToken}
   }
 }
 export function getProfileSuccess (json) {
@@ -48,35 +49,25 @@ export function getProfileFailure (json) {
     payload: json
   }
 }
+
 /**
  * ## State actions
  * controls which form is displayed to the user
  * as in login, register, logout or reset password
+ * this.props.profile.form.originalProfile.objectId,
+        this.props.profile.form.fields.username,
+        this.props.profile.form.fields.email,
+        this.props.global.currentUser
  */
-export function getProfile (sessionToken) {
-  return dispatch => {
-    dispatch(getProfileRequest())
-    // store or get a sessionToken
-    return appAuthToken.getSessionToken(sessionToken)
-      .then((token) => {
-        return BackendFactory(token).getProfile()
-      })
-      .then((json) => {
-        dispatch(getProfileSuccess(json))
-      })
-      .catch((error) => {
-        dispatch(getProfileFailure(error))
-      })
-  }
-}
-/**
- * ## State actions
- * controls which form is displayed to the user
- * as in login, register, logout or reset password
- */
-export function profileUpdateRequest () {
+export function profileUpdateRequest (objectId,username,email,currentUser) {
   return {
-    type: PROFILE_UPDATE_REQUEST
+    type: PROFILE_UPDATE_REQUEST,
+    payload:{
+      objectId:objectId,
+      username:username,
+      email:email,
+      currentUser:currentUser
+    }
   }
 }
 export function profileUpdateSuccess () {
@@ -90,41 +81,7 @@ export function profileUpdateFailure (json) {
     payload: json
   }
 }
-/**
- * ## updateProfile
- * @param {string} userId -  objectId
- * @param {string} username - the users name
- * @param {string] email - user's email
- * @param {Object} sessionToken - the sessionToken
- *
- * The sessionToken is provided when Hot Loading.
- *
- * With the sessionToken, the server is called with the data to update
- * If successful, get the profile so that the screen is updated with
- * the data as now persisted on the serverx
- *
- */
-export function updateProfile (userId, username, email, sessionToken) {
-  return dispatch => {
-    dispatch(profileUpdateRequest())
-    return appAuthToken.getSessionToken(sessionToken)
-      .then((token) => {
-        return BackendFactory(token).updateProfile(userId,
-          {
-            username: username,
-            email: email
-          }
-        )
-      })
-      .then(() => {
-        dispatch(profileUpdateSuccess())
-        dispatch(getProfile())
-      })
-      .catch((error) => {
-        dispatch(profileUpdateFailure(error))
-      })
-  }
-}
+
 /**
  * ## onProfileFormFieldChange
  *

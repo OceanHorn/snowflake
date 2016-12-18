@@ -63,7 +63,7 @@ let Login = React.createClass({
   render () {
     let loginButtonText = I18n.t('Login.login')
     let onButtonPress = buttonPressHandler.bind(null,
-                                                this.props.actions.login,
+                                                this.props.actions.loginRequest,
                                                 this.props.auth.form.fields.username,
                                                 this.props.auth.form.fields.password
                                                )

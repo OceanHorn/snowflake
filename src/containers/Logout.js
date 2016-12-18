@@ -89,7 +89,7 @@ class Logout extends Component {
     let self = this
 
     let onButtonPress = () => {
-      this.props.actions.logout()
+      this.props.actions.logoutRequest()
     }
 
     return (

@@ -6,6 +6,19 @@
  */
 'use strict'
 
+import rootReducer from '../reducers'
+
+
+import AuthInitialState from '../reducers/auth/authInitialState'
+import DeviceInitialState from '../reducers/device/deviceInitialState'
+import GlobalInitialState from '../reducers/global/globalInitialState'
+import ProfileInitialState from '../reducers/profile/profileInitialState'
+
+import authSaga from '../reducers/auth/authSaga'
+import profileSaga from '../reducers/profile/profileSaga'
+import rootSaga from '../rootSaga'
+
+
 /**
  * ## Imports
  *
@@ -13,31 +26,8 @@
  */
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
+import createSagaMiddleware, { END } from 'redux-saga'
 
-/**
-* ## Reducer
-* The reducer contains the 4 reducers from
-* device, global, auth, profile
-*/
-import rootReducer from '../reducers'
-
-//import DevTools from '../containers/DevTools';
-
-/**
- * ## States
- * Snowflake explicitly defines initial state
- *
- */
-import AuthInitialState from '../reducers/auth/authInitialState'
-import DeviceInitialState from '../reducers/device/deviceInitialState'
-import GlobalInitialState from '../reducers/global/globalInitialState'
-import ProfileInitialState from '../reducers/profile/profileInitialState'
-
-/**
- * ## creatStoreWithMiddleware
- * Like the name...
- */
-const enhancer = applyMiddleware(thunk)
 
 /**
  *
@@ -62,7 +52,11 @@ function getInitialState () {
  *
  */
 export default function configureStore () {
-  
-  return createStore(rootReducer, getInitialState(), enhancer);
-
+  const sagaMiddleware = createSagaMiddleware()
+  const enhancer = applyMiddleware(sagaMiddleware,thunk)
+  const store =  createStore(rootReducer, getInitialState(), enhancer); 
+  store.runSaga = sagaMiddleware.run(rootSaga)
+  store.close = () => store.dispatch(END)
+  return store
 }
+

@@ -49,7 +49,7 @@ const scenes = Actions.create(
         <Scene key='App'
             component={App}
             type='replace'
-            initial />
+            initial={true} />
 
         <Scene key='Login'
             component={Login}

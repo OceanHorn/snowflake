@@ -26,13 +26,12 @@ import * as globalActions from '../reducers/global/globalActions'
  * The components we need from ReactNative
  */
 import React from 'react'
-import
-{
-    StyleSheet,
-    View,
-    Text
+import {
+  StyleSheet,
+  View,
+  Text
 }
-from 'react-native'
+  from 'react-native'
 
 /**
  * The Header will display a Image and support Hot Loading
@@ -42,7 +41,7 @@ import Header from '../components/Header'
 /**
  *  Save that state
  */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     deviceVersion: state.device.version,
     auth: {
@@ -60,10 +59,10 @@ function mapStateToProps (state) {
 /**
  * Bind all the actions from authActions, deviceActions and globalActions
  */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({ ...authActions, ...deviceActions, ...globalActions }, dispatch)
-  }
+}
 }
 
 var styles = StyleSheet.create({
@@ -83,31 +82,31 @@ var styles = StyleSheet.create({
 /**
  * ## App class
  */
-var reactMixin = require('react-mixin')
+import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 /**
  * ### Translations
  */
-var I18n = require('react-native-i18n')
+import I18n from 'react-native-i18n'
 import Translations from '../lib/Translations'
 I18n.translations = Translations
 
 let App = React.createClass({
-    /**
-     * See if there's a sessionToken from a previous login
-     *
-     */
-  componentDidMount () {
-        // Use a timer so App screen is displayed
+  /**
+   * See if there's a sessionToken from a previous login
+   *
+   */
+  componentDidMount() {
+    // Use a timer so App screen is displayed
     this.setTimeout(
-            () => {
-              this.props.actions.getSessionToken()
-            },
-            2500
-        )
+      () => {
+        this.props.actions.sessionTokenRequest()
+      },
+      2500
+    )
   },
 
-  render () {
+  render() {
     return (
       <View style={styles.container}>
         <Header isFetching={this.props.auth.form.isFetching}

@@ -154,7 +154,7 @@ class Profile extends Component {
    */
   componentDidMount () {
     if (this.props.profile.form.fields.username === '' && this.props.profile.form.fields.email === '') {
-      this.props.actions.getProfile(this.props.global.currentUser)
+      this.props.actions.getProfileRequest(this.props.global.currentUser)
     } else {
       this.setState({
         formValues: {
@@ -209,7 +209,7 @@ class Profile extends Component {
      */
     let profileButtonText = I18n.t('Profile.update')
     let onButtonPress = () => {
-      this.props.actions.updateProfile(
+        this.props.actions.profileUpdateRequest(
         this.props.profile.form.originalProfile.objectId,
         this.props.profile.form.fields.username,
         this.props.profile.form.fields.email,
