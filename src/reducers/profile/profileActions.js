@@ -63,7 +63,7 @@ export function profileUpdateRequest (objectId,username,email,currentUser) {
   return {
     type: PROFILE_UPDATE_REQUEST,
     payload:{
-      objectId:objectId,
+      userId:objectId,
       username:username,
       email:email,
       currentUser:currentUser

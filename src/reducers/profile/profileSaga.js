@@ -15,9 +15,9 @@ import Csts from '../../lib/constants'
  * as in login, register, logout or reset password
  */
 function* getProfile(action) {
-    try {
-        const token = yield call(appAuthToken.getSessionToken, action.payload.sessionToken)
-        const json = yield call(BackendFactory(token).getProfile)
+    try {        
+        const token = yield call(appAuthToken.getSessionToken, action.payload.sessionToken)       
+        const json = yield call(BackendFactory(token).getProfile)       
         yield put(profileActions.getProfileSuccess(json))
     } catch (error) {
         yield put(profileActions.getProfileFailure(error))

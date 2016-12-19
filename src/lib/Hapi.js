@@ -49,7 +49,7 @@ export class Hapi extends Backend {
    *   status: response.status,
    *   json: response.json()
    */
-   async _fetch(opts){
+   async _fetch(opts){    
     opts = _.extend({
       method: 'GET',
       url: null,
@@ -78,11 +78,10 @@ export class Hapi extends Backend {
 
     let url = this.API_BASE_URL + opts.url
     let res = {}
-
+    console.log(url)
     let response = await fetch(url, reqOpts)
     res.status = response.status
-    res.code = response.code
-
+    res.code = response.code   
     return response.json()
       .then((json) => {
         res.json = json
@@ -118,6 +117,7 @@ export class Hapi extends Backend {
         }
       })
       .catch((error) => {
+        console.log(error)
         throw (error)
       })
   }
@@ -231,7 +231,7 @@ export class Hapi extends Backend {
    *
    * if error, {code: xxx, error: 'message'}
    */
-  getProfile = async ()=> {   
+  getProfile = async ()=> {       
     return await this._fetch({
       method: 'GET',
       url: '/account/profile/me'
