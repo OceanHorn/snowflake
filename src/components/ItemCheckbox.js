@@ -13,7 +13,7 @@
  *
  * React
  */
-import React, {PropTypes} from 'react'
+import React, {PropTypes,Component} from 'react'
 import
 {
   View,
@@ -27,61 +27,28 @@ import
   */
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-var ItemCheckbox = React.createClass({
-  /**
-   * ## ItemCheckbox class
-   *
-   * set the propTypes
-   */
-  propTypes: {
-    onCheck: PropTypes.func,
-    onUncheck: PropTypes.func,
-    icon_check: PropTypes.string,
-    icon_open: PropTypes.string,
-    size: PropTypes.number,
-    backgroundColor: PropTypes.string,
-    color: PropTypes.string,
-    iconSize: PropTypes.string,
-    checked: PropTypes.bool,
-    style: PropTypes.func,
-    text: PropTypes.string,
-    disabled: PropTypes.bool
-  },
-  /**
-   * ### getDefaultProps
-   * set the default values
-   */
-  getDefaultProps: function () {
-    return {
-      onCheck: null,
-      onUncheck: null,
-      icon_check: 'check-square',
-      icon_open: 'square-o',
-      size: 30,
-      backgroundColor: 'white',
-      color: 'grey',
-      iconSize: 'normal',
-      checked: false,
-      text: 'MISSING TEXT',
-      disabled: false
-    }
-  },
-  /**
-   * ### getInitialState
-   *
-   * Set the box to be checked or not
-   */
-  getInitialState: function () {
-    return {
+export default class ItemCheckbox extends Component{
+
+  constructor(props){
+    super(props)    
+    /**
+    * ### getInitialState
+    *
+    * Set the box to be checked or not
+    */
+    this.state = {
       checked: this.props.checked,
       bg_color: this.props.backgroundColor
     }
-  },
+
+    this.completeProgress = this.completeProgress.bind(this)
+  }  
+ 
   /**
    * ### _getCircleCheckSytel
    * merge the props styles w/ some defaults
    */
-  _getCircleCheckStyle: function () {
+  _getCircleCheckStyle() {
     return {
       width: this.props.size,
       height: this.props.size,
@@ -93,13 +60,13 @@ var ItemCheckbox = React.createClass({
       alignItems: 'center',
       padding: 2
     }
-  },
+  }
   /**
    * ### _completeProgress
    * If the checkbox is pressable, figure out what state it's in and
    * what the display should look like
    */
-  _completeProgress: function () {
+  completeProgress() {
     if (this.state.checked) {
       this.setState({
         checked: false,
@@ -117,23 +84,23 @@ var ItemCheckbox = React.createClass({
         this.props.onCheck()
       }
     }
-  },
+  }
   /**
    * ### componentDidMount
    * If there is a ```checked``` property, set the UI appropriately
    */
-  componentDidMount: function () {
+  componentDidMount() {
     if (this.props.checked) {
       this._completeProgress()
     }
-  },
+  }
   /**
    * ### render
    * Use Touchable with or without Feedback depending on
    * ```disabled```.
    * Set the ```iconName``` depending on if checked
    */
-  render: function () {
+  render() {
     var iconName = this.props.icon_open
     if (this.state.checked) {
       iconName = this.props.icon_check
@@ -157,7 +124,7 @@ var ItemCheckbox = React.createClass({
       return (
         <View style={this.props.style}>
           <TouchableHighlight
-            onPress={this._completeProgress} >
+            onPress={this.completeProgress} >
             <View style={{
               flexDirection: 'row',
               flex: 1
@@ -170,6 +137,41 @@ var ItemCheckbox = React.createClass({
         )
     }
   }
-})
+}
 
-module.exports = ItemCheckbox
+  /**
+   * ## ItemCheckbox class
+   *
+   * set the propTypes
+   */
+  ItemCheckbox.propTypes = {
+    onCheck: PropTypes.func,
+    onUncheck: PropTypes.func,
+    icon_check: PropTypes.string,
+    icon_open: PropTypes.string,
+    size: PropTypes.number,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    iconSize: PropTypes.string,
+    checked: PropTypes.bool,
+    style: PropTypes.func,
+    text: PropTypes.string,
+    disabled: PropTypes.bool
+  }
+  /**
+   * ### getDefaultProps
+   * set the default values
+   */
+  ItemCheckbox.defaultProps = {
+      onCheck: null,
+      onUncheck: null,
+      icon_check: 'check-square',
+      icon_open: 'square-o',
+      size: 30,
+      backgroundColor: 'white',
+      color: 'grey',
+      iconSize: 'normal',
+      checked: false,
+      text: 'MISSING TEXT',
+      disabled: false   
+  }

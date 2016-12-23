@@ -23,7 +23,8 @@
  *
  * React
 */
-import React, {PropTypes} from 'react'
+import React, {PropTypes,Component} from 'react'
+
 import
 {
   ActivityIndicator,
@@ -38,7 +39,7 @@ import
 /**
  * Project component that will respond to onPress
  */
-const FormButton = require('./FormButton')
+import FormButton from './FormButton'
 /**
  * ## Styles
  */
@@ -64,60 +65,50 @@ var styles = StyleSheet.create({
 /**
  * ### Translations
  */
-var I18n = require('react-native-i18n')
+import I18n from 'react-native-i18n'
 import Translations from '../lib/Translations'
 I18n.translations = Translations
 
-var Header = React.createClass({
+export default class Header extends Component{
   /**
    * ## Header.class
    * set the initial state of having the button be disabled.
    */
-  getInitialState () {
-    return {
+  constructor (props) {
+    super(props)
+    this.state = {
       text: '',
       isDisabled: true
     }
-  },
-  /**
-   * ### propTypes
-   * * isFetching: display the spinner if true
-   * * showState: should the JSON state, currentState, be displayed
-   * * currentState: the JSON state
-   * * onGetState: the action to call to get the current state
-   * * onSetState: the action to call to set the state
-   */
-  propTypes: {
-    isFetching: PropTypes.bool,
-    showState: PropTypes.bool,
-    currentState: PropTypes.object,
-    onGetState: PropTypes.func,
-    onSetState: PropTypes.func
-  },
+    this.onPressMark = this.onPressMark.bind(this)
+    this.onChangeText = this.onChangeText.bind(this)
+    this.updateStateButtonPress = this.updateStateButtonPress.bind(this)
+  }    
+ 
   /**
    * ### _onPressMark
    * Call the onGetState action passing the state prop
    */
-  _onPressMark () {
+  onPressMark () {
     this.props.onGetState(!this.props.showState)
-  },
+  }
   /**
    * ### _onChangeText
    * when the textinput value changes, set the state for that component
    */
-  _onChangeText (text) {
+  onChangeText (text) {
     this.setState({
       text,
       isDisabled: false
     })
-  },
+  }
   /**
    * ### _updateStateButtonPress
    * When the button for the state is pressed, call ```onSetState```
    */
-  _updateStateButtonPress () {
+  updateStateButtonPress () {
     this.props.onSetState(this.state.text)
-  },
+  }
 
   /**
    * ### render
@@ -142,7 +133,7 @@ var Header = React.createClass({
       <View>
         <View style={styles.header}>
 
-          <TouchableHighlight onPress={this._onPressMark}>
+          <TouchableHighlight onPress={this.onPressMark}>
 
             <Image style={styles.mark}
               source={require('../images/Snowflake.png')}
@@ -161,13 +152,13 @@ var Header = React.createClass({
              value={displayText}
              editable
              multiline
-             onChangeText={(text) => this._onChangeText(text)}
+             onChangeText={(text) => this.onChangeText(text)}
              numberOfLines={20} />
            <View style={{
              marginTop: 10
            }}>
              <FormButton isDisabled={this.state.isDisabled}
-               onPress={this._updateStateButtonPress}
+               onPress={this.updateStateButtonPress}
                buttonText={I18n.t('Header.update_state')} />
            </View>
          </View>
@@ -175,6 +166,20 @@ var Header = React.createClass({
       </View>
     )
   }
-})
+}
 
-module.exports = Header
+ /**
+   * ### propTypes
+   * * isFetching: display the spinner if true
+   * * showState: should the JSON state, currentState, be displayed
+   * * currentState: the JSON state
+   * * onGetState: the action to call to get the current state
+   * * onSetState: the action to call to set the state
+   */
+  Header.propTypes = {
+    isFetching: PropTypes.bool,
+    showState: PropTypes.bool,
+    currentState: PropTypes.object,
+    onGetState: PropTypes.func,
+    onSetState: PropTypes.func
+  }

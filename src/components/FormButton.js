@@ -9,7 +9,7 @@
  *
  * React
  */
-import React from 'react'
+import React, {Component} from 'react'
 import
 {
   StyleSheet,
@@ -36,7 +36,7 @@ var styles = StyleSheet.create({
 
 })
 
-var FormButton = React.createClass({
+export default class FormButton extends Component{
   /**
    * ### render
    *
@@ -54,6 +54,4 @@ var FormButton = React.createClass({
       </View>
     )
   }
-})
-
-module.exports = FormButton
+}

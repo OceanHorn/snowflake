@@ -5,6 +5,19 @@
  *
  */
 'use strict'
+
+/**
+ * The necessary components from React
+ */
+import React, {Component} from 'react'
+import
+{
+  StyleSheet,
+  View,
+  Text
+}
+from 'react-native'
+
 /*
  * ## Imports
  *
@@ -22,18 +35,6 @@ import {Actions} from 'react-native-router-flux'
  * Navigation Bar
  */
 import NavigationBar from 'react-native-navbar'
-
-/**
- * The necessary components from React
- */
-import React from 'react'
-import
-{
-  StyleSheet,
-  View,
-  Text
-}
-from 'react-native'
 
 /**
  * Use device options so we can reference the Version
@@ -88,7 +89,7 @@ I18n.translations = Translations
 /**
  * ## Subview class
  */
-let Subview = React.createClass({
+class Subview extends Component{
 
   render () {
     var titleConfig = {
@@ -112,7 +113,7 @@ let Subview = React.createClass({
       </View>
     )
   }
-})
+}
 
 /**
  * Connect the properties

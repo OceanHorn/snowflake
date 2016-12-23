@@ -7,6 +7,18 @@
  * ```App``` and ```Login```
  */
 'use strict'
+
+/**
+ * The necessary React components
+ */
+import React, {Component} from 'react'
+import
+{
+  StyleSheet,
+  View
+}
+from 'react-native'
+
 /**
 * ## Imports
 *
@@ -38,16 +50,6 @@ import Header from '../components/Header'
  * The itemCheckbox will display the state of the email verified
  */
 import ItemCheckbox from '../components/ItemCheckbox'
-/**
- * The necessary React components
- */
-import React, {Component} from 'react'
-import
-{
-  StyleSheet,
-  View
-}
-from 'react-native'
 
 /**
 * The form processing component
@@ -114,7 +116,18 @@ class Profile extends Component {
         email: ''
       }
     }
+    this.onButtonPress = this.onButtonPress.bind(this)
+    this.onChange = this.onChange.bind(this)
   }
+
+  onButtonPress() {
+        this.props.actions.profileUpdateRequest(
+        this.props.profile.form.originalProfile.objectId,
+        this.props.profile.form.fields.username,
+        this.props.profile.form.fields.email,
+        this.props.global.currentUser)
+  }
+
   /**
    * ### onChange
    *
@@ -208,13 +221,7 @@ class Profile extends Component {
      * user objectId
      */
     let profileButtonText = I18n.t('Profile.update')
-    let onButtonPress = () => {
-        this.props.actions.profileUpdateRequest(
-        this.props.profile.form.originalProfile.objectId,
-        this.props.profile.form.fields.username,
-        this.props.profile.form.fields.email,
-        this.props.global.currentUser)
-    }
+   
     /**
      * Wrap the form with the header and button.  The header props are
      * mostly for support of Hot reloading. See the docs for Header
@@ -238,7 +245,7 @@ class Profile extends Component {
             type={ProfileForm}
             options={options}
             value={this.state.formValues}
-            onChange={this.onChange.bind(self)}
+            onChange={this.onChange}
           />
           <ItemCheckbox text={verfiedText}
             disabled
@@ -247,7 +254,7 @@ class Profile extends Component {
 
         <FormButton
           isDisabled={!this.props.profile.form.isValid || this.props.profile.form.isFetching}
-          onPress={onButtonPress.bind(self)}
+          onPress={this.onButtonPress}
           buttonText={profileButtonText} />
 
       </View>

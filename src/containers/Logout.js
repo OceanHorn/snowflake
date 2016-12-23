@@ -5,6 +5,18 @@
  *
  */
 'use strict'
+
+/**
+ * The necessary React components
+ */
+import React, {Component} from 'react'
+import
+{
+  StyleSheet,
+  View
+}
+from 'react-native'
+
 /**
  * ## Imports
  *
@@ -27,17 +39,6 @@ import Header from '../components/Header'
  * The FormButton will change it's text between the 4 states as necessary
  */
 import FormButton from '../components/FormButton'
-
-/**
- * The necessary React components
- */
-import React, {Component} from 'react'
-import
-{
-  StyleSheet,
-  View
-}
-from 'react-native'
 
 /**
  * ## Styles
@@ -80,18 +81,20 @@ import Translations from '../lib/Translations'
 I18n.translations = Translations
 
 class Logout extends Component {
+  constructor (props) {
+    super(props)   
+    this.onButtonPress = this.onButtonPress.bind(this)  
+  }
+
+ onButtonPress(){
+   this.props.actions.logoutRequest()
+ }
 
   /**
    * ### render
    * Setup some default presentations and render
    */
   render () {
-    let self = this
-
-    let onButtonPress = () => {
-      this.props.actions.logoutRequest()
-    }
-
     return (
       <View style={styles.container}>
         <View>
@@ -103,7 +106,7 @@ class Logout extends Component {
 
           <FormButton
             isDisabled={!this.props.auth.form.isValid || this.props.auth.form.isFetching}
-            onPress={onButtonPress.bind(self)}
+            onPress={this.onButtonPress}
             buttonText={I18n.t('Snowflake.logout')} />
         </View>
       </View>

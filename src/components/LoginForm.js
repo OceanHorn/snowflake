@@ -12,7 +12,7 @@
  *
  * React
  */
-import React, {PropTypes} from 'react'
+import React, {PropTypes,Component} from 'react'
 
 /**
  * States of login display
@@ -38,21 +38,7 @@ import Translations from '../lib/Translations'
 I18n.defaultLocale = "zh-CN";
 I18n.translations = Translations
 
-var LoginForm = React.createClass({
-  /**
-   * ## LoginForm class
-   *
-   * * form: the properties to set into the UI form
-   * * value: the values to set in the input fields
-   * * onChange: function to call when user enters text
-   */
-  propTypes: {
-    formType: PropTypes.string,
-    form: PropTypes.object,
-    value: PropTypes.object,
-    onChange: PropTypes.func
-  },
-
+export default class LoginForm extends Component{
   /**
    * ## render
    *
@@ -172,6 +158,18 @@ var LoginForm = React.createClass({
 
     )
   }
-})
+}
 
-module.exports = LoginForm
+  /**
+   * ## LoginForm class
+   *
+   * * form: the properties to set into the UI form
+   * * value: the values to set in the input fields
+   * * onChange: function to call when user enters text
+   */
+  LoginForm.propTypes = {
+    formType: PropTypes.string,
+    form: PropTypes.object,
+    value: PropTypes.object,
+    onChange: PropTypes.func
+  }

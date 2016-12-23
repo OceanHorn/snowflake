@@ -7,6 +7,19 @@
  *
  */
 'use strict'
+
+/**
+ * The components we need from ReactNative
+ */
+import React, {Component} from 'react'
+
+import {
+  StyleSheet,
+  View,
+  Text
+}
+  from 'react-native'
+
 /*
  * ## Imports
  *
@@ -21,17 +34,6 @@ import { connect } from 'react-redux'
 import * as authActions from '../reducers/auth/authActions'
 import * as deviceActions from '../reducers/device/deviceActions'
 import * as globalActions from '../reducers/global/globalActions'
-
-/**
- * The components we need from ReactNative
- */
-import React from 'react'
-import {
-  StyleSheet,
-  View,
-  Text
-}
-  from 'react-native'
 
 /**
  * The Header will display a Image and support Hot Loading
@@ -91,7 +93,7 @@ import I18n from 'react-native-i18n'
 import Translations from '../lib/Translations'
 I18n.translations = Translations
 
-let App = React.createClass({
+class App extends Component{
   /**
    * See if there's a sessionToken from a previous login
    *
@@ -104,7 +106,7 @@ let App = React.createClass({
       },
       2500
     )
-  },
+  }
 
   render() {
     return (
@@ -120,7 +122,8 @@ let App = React.createClass({
       </View>
     )
   }
-})
+}
+
 // Since we're using ES6 classes, have to define the TimerMixin
 reactMixin(App.prototype, TimerMixin)
 /**

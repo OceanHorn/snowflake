@@ -3,6 +3,12 @@
  *
  */
 'use strict'
+
+/**
+ * Need React
+ */
+import React, {Component} from 'react'
+
 /**
  * ## Imports
  *
@@ -20,11 +26,6 @@ import * as authActions from '../reducers/auth/authActions'
  *   LoginRender
  */
 import LoginRender from '../components/LoginRender'
-
-/**
- * Need React
- */
-import React from 'react'
 
 const {
   REGISTER,
@@ -49,9 +50,6 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-function buttonPressHandler (resetPassword, email) {
-  resetPassword(email)
-}
 /**
  * ### Translations
  */
@@ -59,19 +57,23 @@ var I18n = require('react-native-i18n')
 import Translations from '../lib/Translations'
 I18n.translations = Translations
 
-let ForgotPassword = React.createClass({
+class ForgotPassword extends Component{
+  constructor (props) {
+    super(props)   
+    this.onButtonPress = this.onButtonPress.bind(this)  
+  }
 
+  onButtonPress(){
+    this.props.actions.resetPassword(this.props.auth.form.fields.email)
+  }
+  
   render () {
     let loginButtonText = I18n.t('ForgotPassword.reset_password')
-    let onButtonPress = buttonPressHandler.bind(null,
-                                                this.props.actions.resetPassword,
-                                                this.props.auth.form.fields.email)
-
     return (
       <LoginRender
         formType={FORGOT_PASSWORD}
         loginButtonText={loginButtonText}
-        onButtonPress={onButtonPress}
+        onButtonPress={this.onButtonPress}
         displayPasswordCheckbox={false}
         leftMessageType={REGISTER}
         rightMessageType={LOGIN}
@@ -80,6 +82,6 @@ let ForgotPassword = React.createClass({
       />
     )
   }
-})
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword)

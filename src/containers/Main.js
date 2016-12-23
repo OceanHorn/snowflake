@@ -4,6 +4,18 @@
  *
  */
 'use strict'
+
+/**
+ * The components needed from React
+ */
+import React, {Component} from 'react'
+import
+{
+  StyleSheet,
+  View
+}
+from 'react-native'
+
 /*
  * ## Imports
  *
@@ -27,17 +39,6 @@ import {Actions} from 'react-native-router-flux'
  * The Header will display a Image and support Hot Loading
  */
 import Header from '../components/Header'
-
-/**
- * The components needed from React
- */
-import React, {Component} from 'react'
-import
-{
-  StyleSheet,
-  View
-}
-from 'react-native'
 
 /**
  * The platform neutral button
@@ -100,6 +101,10 @@ I18n.translations = Translations
  * ## App class
  */
 class Main extends Component {
+  constructor (props) {
+    super(props)   
+    this.handlePress = this.handlePress.bind(this)
+  }
 
   handlePress () {
     Actions.Subview({
@@ -118,7 +123,7 @@ class Main extends Component {
             onGetState={this.props.actions.getState}
             onSetState={this.props.actions.setState} />
 
-          <Button style={styles.button} onPress={this.handlePress.bind(this)}>
+          <Button style={styles.button} onPress={this.handlePress}>
             {I18n.t('Main.navigate')}
           </Button>
         </View>

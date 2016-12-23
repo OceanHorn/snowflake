@@ -5,6 +5,12 @@
  *
  */
 'use strict'
+
+/**
+ * The necessary React components
+ */
+import React, {Component} from 'react'
+
 /**
  * ## Imports
  *
@@ -46,10 +52,6 @@ import LoginForm from '../components/LoginForm'
  */
 import ItemCheckbox from '../components/ItemCheckbox'
 
-/**
- * The necessary React components
- */
-import React, {Component} from 'react'
 import
 {
   StyleSheet,
@@ -122,6 +124,7 @@ class LoginRender extends Component {
         passwordAgain: this.props.auth.form.fields.passwordAgain
       }
     }
+    this.onChange = this.onChange.bind(this)
   }
 
   /**
@@ -224,8 +227,6 @@ class LoginRender extends Component {
     let leftMessage = this.getMessage(leftMessageType, this.props.actions)
     let rightMessage = this.getMessage(rightMessageType, this.props.actions)
 
-    let self = this
-
     // display the login / register / change password screens
     this.errorAlert.checkError(this.props.auth.form.error)
 
@@ -269,7 +270,7 @@ class LoginRender extends Component {
                 formType={formType}
                 form={this.props.auth.form}
                 value={this.state.value}
-                onChange={self.onChange.bind(self)} />
+                onChange={this.onChange} />
               {passwordCheckbox}
             </View>
 

@@ -5,6 +5,12 @@
  *
  */
 'use strict'
+
+/**
+ * The necessary React components
+ */
+import React, {Component} from 'react'
+
 /**
  * ## Imports
  *
@@ -22,11 +28,6 @@ import * as authActions from '../reducers/auth/authActions'
  *   LoginRender
  */
 import LoginRender from '../components/LoginRender'
-
-/**
- * The necessary React components
- */
-import React from 'react'
 
 import Csts from '../lib/constants'
 //LOGIN,REGISTER,FORGOT_PASSWORD
@@ -58,21 +59,25 @@ import I18n from 'react-native-i18n'
 import Translations from '../lib/Translations'
 I18n.translations = Translations
 
-let Login = React.createClass({
+class Login extends Component{
+  constructor (props) {
+    super(props)   
+    this.onButtonPress = this.onButtonPress.bind(this)  
+  }
+ 
+  onButtonPress(){
+    this.props.actions.loginRequest(this.props.auth.form.fields.username,
+                                    this.props.auth.form.fields.password)
+  }
 
   render () {
-    let loginButtonText = I18n.t('Login.login')
-    let onButtonPress = buttonPressHandler.bind(null,
-                                                this.props.actions.loginRequest,
-                                                this.props.auth.form.fields.username,
-                                                this.props.auth.form.fields.password
-                                               )
+    let loginButtonText = I18n.t('Login.login')   
 
     return (
       <LoginRender
         formType={Csts.LOGIN}
         loginButtonText={loginButtonText}
-        onButtonPress={onButtonPress}
+        onButtonPress={this.onButtonPress}
         displayPasswordCheckbox
         leftMessageType={Csts.REGISTER}
         rightMessageType={Csts.FORGOT_PASSWORD}
@@ -81,6 +86,6 @@ let Login = React.createClass({
       />
     )
   }
-})
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)
