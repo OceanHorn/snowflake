@@ -62,7 +62,7 @@ export default class ItemCheckbox extends Component{
     }
   }
   /**
-   * ### _completeProgress
+   * ### completeProgress
    * If the checkbox is pressable, figure out what state it's in and
    * what the display should look like
    */
@@ -91,7 +91,7 @@ export default class ItemCheckbox extends Component{
    */
   componentDidMount() {
     if (this.props.checked) {
-      this._completeProgress()
+      this.completeProgress()
     }
   }
   /**

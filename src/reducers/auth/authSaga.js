@@ -131,12 +131,39 @@ function* signup(action) {
 
 }
 
+/**
+ * ## ResetPassword
+ *
+ * @param {string} email - the email address to reset password
+ * *Note* There's no feedback to the user whether the email
+ * address is valid or not.
+ *
+ * This functionality depends on the server set
+ * up correctly ie, that emails are verified.
+ * With that enabled, an email can be sent w/ a
+ * form for setting the new password.
+ */
+function* resetPassword (action) {
+
+  try {
+    yield call(BackendFactory().resetPassword,
+                            {email:action.payload.email})    
+    yield put(authActions.loginState())
+    yield put(authActions.resetPasswordSuccess())
+    Actions.Login()
+  } catch (error) {
+    yield put(authActions.resetPasswordFailure(error))
+  }
+ 
+}
+
 // single entry point to start all Sagas at once
 export default function* watchAuth() { 
   yield [
     yield takeEvery(Csts.SESSION_TOKEN_REQUEST, sessionToken),
     yield takeEvery(Csts.LOGIN_REQUEST, login),
     yield takeEvery(Csts.SIGNUP_REQUEST, signup),
-    yield takeEvery(Csts.LOGOUT_REQUEST, logout)
+    yield takeEvery(Csts.LOGOUT_REQUEST, logout),
+    yield takeEvery(Csts.RESET_PASSWORD_REQUEST, resetPassword)
   ]
 }

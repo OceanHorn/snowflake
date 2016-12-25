@@ -2,13 +2,14 @@
 
 import React from 'react'
 
-import {   
+import {
     StyleSheet,
     View,
-    Text } from 'react-native'
- 
+    Text
+} from 'react-native'
 
-import {Actions, Scene} from 'react-native-router-flux';
+
+import { Actions, Scene, ActionConst } from 'react-native-router-flux';
 
 /**
  * ### Translations
@@ -39,33 +40,33 @@ import Subview from './containers/Subview'
 import TabIcon from './components/TabIcon'
 
 const styles = StyleSheet.create({
-  tabBar: {
-    height: 70
-  }
+    tabBar: {
+        height: 70
+    }
 })
 
 const scenes = Actions.create(
     <Scene key='root' hideNavBar>
         <Scene key='App'
             component={App}
-            type='replace'
+            type={ActionConst.REPLACE}
             initial={true} />
 
         <Scene key='Login'
             component={Login}
-            type='replace' />
+            type={ActionConst.REPLACE} />
 
         <Scene key='InitialLoginForm'
             component={Register}
-            type='replace' /> 
+            type={ActionConst.REPLACE} />
 
         <Scene key='Register'
             component={Register}
-            type='replace' />
+            type={ActionConst.REPLACE} />
 
         <Scene key='ForgotPassword'
             component={ForgotPassword}
-            type='replace' />
+            type={ActionConst.REPLACE} />
 
         <Scene key='Subview'
             component={Subview} />
@@ -74,15 +75,15 @@ const scenes = Actions.create(
             tabs
             hideNavBar
             tabBarStyle={styles.tabBar}
-            default='Main'>
+            default='Main'>   
 
-            <Scene key='Logout'
-                title={I18n.t('Snowflake.logout')}
-                icon={TabIcon}
-                iconName={'sign-out'}
-                hideNavBar
-                component={Logout} />
-
+             <Scene key='Logout'
+                 title={I18n.t('Snowflake.logout')}
+                 icon={TabIcon}
+                 iconName={'sign-out'}
+                 hideNavBar
+                 component={Logout} />           
+           
             <Scene key='Main'
                 title={I18n.t('Snowflake.main')}
                 iconName={'home'}

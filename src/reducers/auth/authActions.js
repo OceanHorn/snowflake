@@ -209,9 +209,10 @@ export function loginFailure (error) {
 /**
  * ## ResetPassword actions
  */
-export function resetPasswordRequest () {
+export function resetPasswordRequest (email) {
   return {
-    type: Csts.RESET_PASSWORD_REQUEST
+    type: Csts.RESET_PASSWORD_REQUEST,
+    payload:email
   }
 }
 
@@ -225,33 +226,5 @@ export function resetPasswordFailure (error) {
   return {
     type: Csts.RESET_PASSWORD_FAILURE,
     payload: error
-  }
-}
-/**
- * ## ResetPassword
- *
- * @param {string} email - the email address to reset password
- * *Note* There's no feedback to the user whether the email
- * address is valid or not.
- *
- * This functionality depends on the server set
- * up correctly ie, that emails are verified.
- * With that enabled, an email can be sent w/ a
- * form for setting the new password.
- */
-export function resetPassword (email) {
-  return dispatch => {
-    dispatch(resetPasswordRequest())
-    return BackendFactory().resetPassword({
-      email: email
-    })
-      .then(() => {
-        dispatch(loginState())
-        dispatch(resetPasswordSuccess())
-        Actions.Login()
-      })
-      .catch((error) => {
-        dispatch(resetPasswordFailure(error))
-      })
   }
 }

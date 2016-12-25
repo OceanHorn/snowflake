@@ -43,7 +43,7 @@ import Header from '../components/Header'
 /**
  * The platform neutral button
  */
-const Button = require('apsl-react-native-button')
+import Button from 'apsl-react-native-button'
 
 /**
  *  Instead of including all app states via ...state
